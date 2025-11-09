@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AuditLog.SystemTests/AuditLog.SystemTests.csproj" />
+  <Project Path="AuditLog/AuditLog.csproj" />
+</Solution>
