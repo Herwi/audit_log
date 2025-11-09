@@ -1,6 +1,12 @@
+using AuditLog.Domain;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AuditLogDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
