@@ -55,3 +55,8 @@ nunit-*.xml
 
 # appsettings
 appsettings.Development.json
+
+# Frontend (React/Vite)
+AuditLog.Client/node_modules/
+AuditLog.Client/dist/
+AuditLog/wwwroot/
