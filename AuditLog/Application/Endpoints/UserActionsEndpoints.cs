@@ -1,5 +1,6 @@
 namespace AuditLog.Application.Endpoints;
 
+using Dtos;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +31,39 @@ public static class UserActionsEndpoints
     /// <param name="context">Database context</param>
     /// <param name="page">Page number (default: 1)</param>
     /// <param name="pageSize">Number of items per page (default: 10)</param>
-    /// <returns>List of user actions</returns>
+    /// <returns>Paginated list of user actions with metadata</returns>
     private static async Task<IResult> GetUserActions(
         Guid organizationId,
         RekrutacjaDbContext context,
         int page = 1,
         int pageSize = 10)
     {
+        // Get total count for pagination metadata
+        var totalCount = await GetTotalUserActionsCountAsync(organizationId, context);
+
+        // Get paginated data
         var userActionDtos = await GetUserActionDtosAsync(organizationId, context, page, pageSize);
         var userActions = userActionDtos.Select(dto => dto.ToUserAction()).ToList();
-        return Results.Ok(userActions);
+
+        // Calculate pagination metadata
+        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+        var paginationMetadata = new PaginationMetadata
+        {
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            HasPreviousPage = page > 1,
+            HasNextPage = page < totalPages
+        };
+
+        var response = new PagedResponse<Domain.Entities.UserAction>
+        {
+            Data = userActions,
+            Pagination = paginationMetadata
+        };
+
+        return Results.Ok(response);
     }
 
     /// <summary>
@@ -100,5 +124,22 @@ public static class UserActionsEndpoints
                 (page - 1) * pageSize,
                 pageSize)
             .ToListAsync();
+    }
+
+    /// <summary>
+    /// Gets the total count of distinct user actions for an organization using EF Core
+    /// </summary>
+    /// <param name="organizationId">The organization identifier</param>
+    /// <param name="context">Database context</param>
+    /// <returns>Total number of user actions</returns>
+    private static async Task<int> GetTotalUserActionsCountAsync(
+        Guid organizationId,
+        RekrutacjaDbContext context)
+    {
+        return await context.AuditLogs
+            .Where(a => a.OrganizationId == organizationId)
+            .Select(a => a.CorrelationId)
+            .Distinct()
+            .CountAsync();
     }
 }
