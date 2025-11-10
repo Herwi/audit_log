@@ -14,13 +14,13 @@ public class RekrutacjaDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Entities.AuditLogEntity> AuditLogs { get; set; }
+    public virtual DbSet<AuditLogEntity> AuditLogs { get; set; }
 
     public virtual DbSet<DocumentHeaderEntity> DocumentHeaders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Entities.AuditLogEntity>(entity =>
+        modelBuilder.Entity<AuditLogEntity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("pk_auditlog");
 
