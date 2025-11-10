@@ -1,6 +1,6 @@
 namespace AuditLog.Infrastructure.Persistence.Entities;
 
-public class DocumentHeader
+public class DocumentHeaderEntity
 {
     public Guid Id { get; set; }
 

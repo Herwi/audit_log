@@ -14,13 +14,13 @@ public class RekrutacjaDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Entities.AuditLog> AuditLogs { get; set; }
+    public virtual DbSet<Entities.AuditLogEntity> AuditLogs { get; set; }
 
-    public virtual DbSet<DocumentHeader> DocumentHeaders { get; set; }
+    public virtual DbSet<DocumentHeaderEntity> DocumentHeaders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Entities.AuditLog>(entity =>
+        modelBuilder.Entity<Entities.AuditLogEntity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("pk_auditlog");
 
@@ -51,7 +51,7 @@ public class RekrutacjaDbContext : DbContext
             entity.Property(e => e.UserId).HasColumnName("user_id");
         });
 
-        modelBuilder.Entity<DocumentHeader>(entity =>
+        modelBuilder.Entity<DocumentHeaderEntity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("pk_documentheader");
 

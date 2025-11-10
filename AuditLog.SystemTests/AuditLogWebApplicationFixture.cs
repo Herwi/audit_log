@@ -15,6 +15,8 @@ public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAs
         .WithDatabase("auditlog_test")
         .WithUsername("test")
         .WithPassword("test")
+        .WithReuse(true)
+        .WithName("auditlog_test_container")
         .Build();
 
     public string ConnectionString => _postgreSqlContainer.GetConnectionString();
@@ -36,7 +38,8 @@ public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAs
     public async Task InitializeAsync()
     {
         await _postgreSqlContainer.StartAsync();
-        await CreateDatabaseSchemaAsync();
+        await RecreateDatabaseAsync();
+        await SeedDatabaseAsync();
     }
 
     public new async Task DisposeAsync()
@@ -44,13 +47,24 @@ public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAs
         await _postgreSqlContainer.DisposeAsync();
     }
 
-    private async Task CreateDatabaseSchemaAsync()
+    private async Task RecreateDatabaseAsync()
     {
         var options = new DbContextOptionsBuilder<RekrutacjaDbContext>()
             .UseNpgsql(ConnectionString)
             .Options;
 
         await using var context = new RekrutacjaDbContext(options);
+        await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
+    }
+
+    private async Task SeedDatabaseAsync()
+    {
+        var options = new DbContextOptionsBuilder<RekrutacjaDbContext>()
+            .UseNpgsql(ConnectionString)
+            .Options;
+
+        await using var context = new RekrutacjaDbContext(options);
+        await DatabaseSeeder.SeedAsync(context);
     }
 }

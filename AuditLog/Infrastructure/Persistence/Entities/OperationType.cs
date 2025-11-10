@@ -1,6 +1,6 @@
 namespace AuditLog.Infrastructure.Persistence.Entities;
 
-public enum Type
+public enum OperationType
 {
     Added = 1,
     Deleted = 2,

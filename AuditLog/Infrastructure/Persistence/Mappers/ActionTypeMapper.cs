@@ -12,47 +12,47 @@ public static class ActionTypeMapper
     /// Maps a combination of Type (Added/Deleted/Modified) and EntityType
     /// to a specific ActionType enum value
     /// </summary>
-    /// <param name="operationType">The operation performed (Added, Deleted, Modified)</param>
+    /// <param name="operationOperationType">The operation performed (Added, Deleted, Modified)</param>
     /// <param name="entityType">The type of entity affected</param>
     /// <returns>The corresponding ActionType, or Unknown if no mapping exists</returns>
-    public static DomainActionType Map(Type operationType, EntityType entityType)
+    public static DomainActionType Map(OperationType operationOperationType, EntityType entityType)
     {
-        return (operationType, entityType) switch
+        return (operationType: operationOperationType, entityType) switch
         {
             // Contract Header actions
-            (Type.Added, EntityType.ContractHeaderEntity) => DomainActionType.ContractCreated,
-            (Type.Deleted, EntityType.ContractHeaderEntity) => DomainActionType.ContractDeleted,
-            (Type.Modified, EntityType.ContractHeaderEntity) => DomainActionType.ContractModified,
+            (OperationType.Added, EntityType.ContractHeaderEntity) => DomainActionType.ContractCreated,
+            (OperationType.Deleted, EntityType.ContractHeaderEntity) => DomainActionType.ContractDeleted,
+            (OperationType.Modified, EntityType.ContractHeaderEntity) => DomainActionType.ContractModified,
 
             // Annex Header actions
-            (Type.Added, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexCreated,
-            (Type.Deleted, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexDeleted,
-            (Type.Modified, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexModified,
+            (OperationType.Added, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexCreated,
+            (OperationType.Deleted, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexDeleted,
+            (OperationType.Modified, EntityType.AnnexHeaderEntity) => DomainActionType.AnnexModified,
 
             // Annex Change actions
-            (Type.Added, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeCreated,
-            (Type.Deleted, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeDeleted,
-            (Type.Modified, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeModified,
+            (OperationType.Added, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeCreated,
+            (OperationType.Deleted, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeDeleted,
+            (OperationType.Modified, EntityType.AnnexChangeEntity) => DomainActionType.AnnexChangeModified,
 
             // File actions
-            (Type.Added, EntityType.FileEntity) => DomainActionType.FileCreated,
-            (Type.Deleted, EntityType.FileEntity) => DomainActionType.FileDeleted,
-            (Type.Modified, EntityType.FileEntity) => DomainActionType.FileModified,
+            (OperationType.Added, EntityType.FileEntity) => DomainActionType.FileCreated,
+            (OperationType.Deleted, EntityType.FileEntity) => DomainActionType.FileDeleted,
+            (OperationType.Modified, EntityType.FileEntity) => DomainActionType.FileModified,
 
             // Invoice actions
-            (Type.Added, EntityType.InvoiceEntity) => DomainActionType.InvoiceCreated,
-            (Type.Deleted, EntityType.InvoiceEntity) => DomainActionType.InvoiceDeleted,
-            (Type.Modified, EntityType.InvoiceEntity) => DomainActionType.InvoiceModified,
+            (OperationType.Added, EntityType.InvoiceEntity) => DomainActionType.InvoiceCreated,
+            (OperationType.Deleted, EntityType.InvoiceEntity) => DomainActionType.InvoiceDeleted,
+            (OperationType.Modified, EntityType.InvoiceEntity) => DomainActionType.InvoiceModified,
 
             // Payment Schedule actions
-            (Type.Added, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleCreated,
-            (Type.Deleted, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleDeleted,
-            (Type.Modified, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleModified,
+            (OperationType.Added, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleCreated,
+            (OperationType.Deleted, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleDeleted,
+            (OperationType.Modified, EntityType.PaymentScheduleEntity) => DomainActionType.PaymentScheduleModified,
 
             // Contract Funding actions
-            (Type.Added, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingCreated,
-            (Type.Deleted, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingDeleted,
-            (Type.Modified, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingModified,
+            (OperationType.Added, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingCreated,
+            (OperationType.Deleted, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingDeleted,
+            (OperationType.Modified, EntityType.ContractFundingEntity) => DomainActionType.ContractFundingModified,
 
             // Unknown entity type or operation type
             _ => DomainActionType.Unknown
