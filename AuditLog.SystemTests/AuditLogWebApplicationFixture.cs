@@ -24,11 +24,11 @@ public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAs
         builder.ConfigureServices(services =>
         {
             // Remove the default DbContext registration
-            services.RemoveAll<DbContextOptions<AuditLogDbContext>>();
-            services.RemoveAll<AuditLogDbContext>();
+            services.RemoveAll<DbContextOptions<RekrutacjaDbContext>>();
+            services.RemoveAll<RekrutacjaDbContext>();
 
             // Register DbContext with testcontainer connection string
-            services.AddDbContext<AuditLogDbContext>(options =>
+            services.AddDbContext<RekrutacjaDbContext>(options =>
                 options.UseNpgsql(ConnectionString));
         });
     }
@@ -46,11 +46,11 @@ public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAs
 
     private async Task CreateDatabaseSchemaAsync()
     {
-        var options = new DbContextOptionsBuilder<AuditLogDbContext>()
+        var options = new DbContextOptionsBuilder<RekrutacjaDbContext>()
             .UseNpgsql(ConnectionString)
             .Options;
 
-        await using var context = new AuditLogDbContext(options);
+        await using var context = new RekrutacjaDbContext(options);
         await context.Database.EnsureCreatedAsync();
     }
 }

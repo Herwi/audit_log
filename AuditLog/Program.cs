@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<AuditLogDbContext>(options =>
+builder.Services.AddDbContext<RekrutacjaDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("RekrutacjaDb")));
 
 builder.Services.AddOpenApi();
