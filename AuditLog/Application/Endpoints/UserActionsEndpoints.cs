@@ -16,7 +16,7 @@ public static class UserActionsEndpoints
     /// <returns>The route group builder for chaining</returns>
     public static RouteGroupBuilder MapUserActionsEndpoints(this RouteGroupBuilder group)
     {
-        group.MapGet("/organizations/{organizationId}/user-actions", GetUserActions)
+        group.MapGet("/organizations/{organizationId:guid}/user-actions", GetUserActions)
             .WithName("GetUserActions")
             .WithOpenApi();
 
