@@ -1,6 +1,6 @@
 namespace AuditLog.Infrastructure.Persistence.Mappers;
 
-using AuditLog.Infrastructure.Persistence.Entities;
+using Entities;
 using DomainActionType = AuditLog.Domain.Entities.ActionType;
 
 /// <summary>

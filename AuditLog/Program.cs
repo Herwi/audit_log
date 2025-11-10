@@ -1,3 +1,4 @@
+using AuditLog.Application.Endpoints;
 using AuditLog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +17,13 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
+// API v1 endpoint group
 var apiV1 = app.MapGroup("/api/v1");
 
-apiV1.MapGet("/organizations/{organizationId}/user-activities", (string organizationId) => new List<UserActivity>())
-    .WithName("GetUserActivities");
+// Map endpoint modules
+apiV1.MapUserActionsEndpoints();
 
 app.Run();
-
-internal record UserActivity;
 
 // Make the implicit Program class accessible to tests
 public partial class Program
