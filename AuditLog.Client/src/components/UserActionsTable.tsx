@@ -135,9 +135,9 @@ const UserActionsTable = () => {
                   pages.push(
                     <PaginationItem key={i}>
                       <PaginationLink
-                        onClick={() => setCurrentPage(i)}
+                        onClick={i === current ? undefined : () => setCurrentPage(i)}
                         isActive={i === current}
-                        className="cursor-pointer"
+                        className={i === current ? "pointer-events-none" : "cursor-pointer"}
                       >
                         {i}
                       </PaginationLink>
@@ -148,9 +148,9 @@ const UserActionsTable = () => {
                 pages.push(
                   <PaginationItem key={1}>
                     <PaginationLink
-                      onClick={() => setCurrentPage(1)}
+                      onClick={current === 1 ? undefined : () => setCurrentPage(1)}
                       isActive={current === 1}
-                      className="cursor-pointer"
+                      className={current === 1 ? "pointer-events-none" : "cursor-pointer"}
                     >
                       1
                     </PaginationLink>
@@ -172,9 +172,9 @@ const UserActionsTable = () => {
                   pages.push(
                     <PaginationItem key={i}>
                       <PaginationLink
-                        onClick={() => setCurrentPage(i)}
+                        onClick={i === current ? undefined : () => setCurrentPage(i)}
                         isActive={i === current}
-                        className="cursor-pointer"
+                        className={i === current ? "pointer-events-none" : "cursor-pointer"}
                       >
                         {i}
                       </PaginationLink>
@@ -193,9 +193,9 @@ const UserActionsTable = () => {
                 pages.push(
                   <PaginationItem key={totalPages}>
                     <PaginationLink
-                      onClick={() => setCurrentPage(totalPages)}
+                      onClick={current === totalPages ? undefined : () => setCurrentPage(totalPages)}
                       isActive={current === totalPages}
-                      className="cursor-pointer"
+                      className={current === totalPages ? "pointer-events-none" : "cursor-pointer"}
                     >
                       {totalPages}
                     </PaginationLink>
