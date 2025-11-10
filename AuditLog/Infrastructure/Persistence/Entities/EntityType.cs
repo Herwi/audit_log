@@ -1,4 +1,4 @@
-namespace AuditLog.Domain.Entities;
+namespace AuditLog.Infrastructure.Persistence.Entities;
 
 public enum EntityType
 {

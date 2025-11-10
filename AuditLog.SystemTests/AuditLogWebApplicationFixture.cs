@@ -1,4 +1,4 @@
-using AuditLog.Domain;
+using AuditLog.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

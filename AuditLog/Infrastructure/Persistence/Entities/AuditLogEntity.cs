@@ -1,6 +1,6 @@
-namespace AuditLog.Domain.Entities;
+namespace AuditLog.Infrastructure.Persistence.Entities;
 
-public class AuditLog
+public class AuditLogEntity
 {
     public int Id { get; set; }
     public Guid? OrganizationId { get; set; }

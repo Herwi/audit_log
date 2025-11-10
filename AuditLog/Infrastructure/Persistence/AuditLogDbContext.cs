@@ -1,7 +1,7 @@
-using AuditLog.Domain.Entities;
+using AuditLog.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuditLog.Domain;
+namespace AuditLog.Infrastructure.Persistence;
 
 public class AuditLogDbContext : DbContext
 {
@@ -9,15 +9,15 @@ public class AuditLogDbContext : DbContext
     {
     }
 
-    public DbSet<Entities.AuditLog> AuditLogs { get; set; }
-    public DbSet<DocumentHeader> DocumentHeaders { get; set; }
+    public DbSet<AuditLogEntity> AuditLogs { get; set; }
+    public DbSet<DocumentHeaderEntity> DocumentHeaders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // AuditLog entity configuration
-        modelBuilder.Entity<Entities.AuditLog>(entity =>
+        modelBuilder.Entity<AuditLogEntity>(entity =>
         {
             entity.ToTable("audit_log");
 
@@ -43,7 +43,7 @@ public class AuditLogDbContext : DbContext
         });
 
         // DocumentHeader entity configuration
-        modelBuilder.Entity<DocumentHeader>(entity =>
+        modelBuilder.Entity<DocumentHeaderEntity>(entity =>
         {
             entity.ToTable("document_header");
 

@@ -1,4 +1,4 @@
-using AuditLog.Domain;
+using AuditLog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
