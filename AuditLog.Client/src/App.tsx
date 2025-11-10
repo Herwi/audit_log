@@ -1,10 +1,11 @@
-import { Button } from "./components/ui/button";
+import Navbar from "./components/navbar";
+import { OrganizationsProvider } from "./contexts/OrganizationsContext";
 
 const App = () => {
   return (
-    <div>basic setup
-      <Button variant="outline">Click me</Button>
-    </div>
+    <OrganizationsProvider>
+      <Navbar />
+    </OrganizationsProvider>
   );
 }
 
