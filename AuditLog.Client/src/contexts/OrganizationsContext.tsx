@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
+import { useValidatedFetcher } from "@/hooks/useValidatedFetcher";
+import { organizationsSchema, type Organizations } from "@/types/organization";
 
 interface OrganizationsContextType {
-  organizations: string[] | undefined;
+  organizations: Organizations | undefined;
   activeOrganization: string | null;
   setActiveOrganization: (orgId: string) => void;
   isLoading: boolean;
@@ -11,10 +13,9 @@ interface OrganizationsContextType {
 
 const OrganizationsContext = createContext<OrganizationsContextType | undefined>(undefined);
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export const OrganizationsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { data: organizations, error, isLoading } = useSWR<string[]>(
+  const fetcher = useValidatedFetcher(organizationsSchema);
+  const { data: organizations, error, isLoading } = useSWR<Organizations>(
     "/api/v1/organizations",
     fetcher
   );
