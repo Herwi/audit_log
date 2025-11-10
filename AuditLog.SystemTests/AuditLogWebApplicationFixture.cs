@@ -8,8 +8,20 @@ using Testcontainers.PostgreSql;
 
 namespace AuditLog.SystemTests;
 
+/// <summary>
+/// Collection definition for database tests that must run sequentially.
+/// xUnit runs tests in different collections in parallel, but tests within
+/// the same collection run sequentially.
+/// </summary>
+[CollectionDefinition(AuditLogWebApplicationFixture.CollectionName, DisableParallelization = true)]
+public class AuditLogWebApplicationFixtureCollection : ICollectionFixture<AuditLogWebApplicationFixture>
+{
+}
+
 public class AuditLogWebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    public const string CollectionName = nameof(AuditLogWebApplicationFixture);
+
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:16-alpine")
         .WithDatabase("auditlog_test")

@@ -8,7 +8,9 @@ namespace AuditLog.SystemTests;
 /// </summary>
 public static class DatabaseSeeder
 {
-    private static readonly Guid OrganizationId = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+    private static readonly Guid Organization1Id = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+    private static readonly Guid Organization2Id = Guid.Parse("7b91c8e2-4d3a-4f1e-9c8b-5a6d7e8f9a0b");
+    private static readonly Guid Organization3Id = Guid.Parse("9d2e4f6a-8b1c-4e5d-a7f9-3c5b8d1e4a7b");
 
     public static async Task SeedAsync(RekrutacjaDbContext context)
     {
@@ -34,21 +36,21 @@ public static class DatabaseSeeder
             {
                 Id = Guid.Parse("c0000001-0000-0000-0000-000000000001"),
                 Number = "2024/01/001",
-                OrganizationId = OrganizationId,
+                OrganizationId = Organization1Id,
                 CreatedDate = DateTime.Parse("2024-01-15 10:00:00")
             },
             new DocumentHeaderEntity
             {
                 Id = Guid.Parse("c0000002-0000-0000-0000-000000000001"),
                 Number = "2024/01/002",
-                OrganizationId = OrganizationId,
+                OrganizationId = Organization1Id,
                 CreatedDate = DateTime.Parse("2024-01-18 10:00:00")
             },
             new DocumentHeaderEntity
             {
                 Id = Guid.Parse("c0000003-0000-0000-0000-000000000001"),
                 Number = "2024/01/003",
-                OrganizationId = OrganizationId,
+                OrganizationId = Organization1Id,
                 CreatedDate = DateTime.Parse("2024-01-20 08:00:00")
             }
         };
@@ -255,6 +257,30 @@ public static class DatabaseSeeder
                 "b0000009-0000-0000-0000-000000000001", "ffffffff-ffff-ffff-ffff-ffffffffffff")
         ]);
 
+        // ACTION 16: Invoice Created for Organization 2 (2 entries)
+        auditLogs.AddRange([
+            CreateAuditLog("d6e7f8a9-bcde-f012-def0-9abcdef01234", "adam.nowicki@company2.pl",
+                OperationType.Added, EntityType.InvoiceEntity, "2024-01-23 10:00:00.000",
+                "10000003-0000-0000-0000-000000000001", "12345678-1234-1234-1234-123456789012",
+                Organization2Id),
+            CreateAuditLog("d6e7f8a9-bcde-f012-def0-9abcdef01234", "adam.nowicki@company2.pl",
+                OperationType.Modified, EntityType.FileEntity, "2024-01-23 10:00:00.100",
+                "f0000012-0000-0000-0000-000000000001", "12345678-1234-1234-1234-123456789012",
+                Organization2Id)
+        ]);
+
+        // ACTION 17: Annex Created for Organization 3 (2 entries)
+        auditLogs.AddRange([
+            CreateAuditLog("e7f8a9bc-def0-1234-ef01-abcdef012345", "ewa.kowalska@company3.pl",
+                OperationType.Added, EntityType.AnnexHeaderEntity, "2024-01-24 11:00:00.000",
+                "a0000007-0000-0000-0000-000000000001", "23456789-2345-2345-2345-234567890123",
+                Organization3Id),
+            CreateAuditLog("e7f8a9bc-def0-1234-ef01-abcdef012345", "ewa.kowalska@company3.pl",
+                OperationType.Added, EntityType.AnnexChangeEntity, "2024-01-24 11:00:00.100",
+                "a0000008-0000-0000-0000-000000000001", "23456789-2345-2345-2345-234567890123",
+                Organization3Id)
+        ]);
+
         await context.AuditLogs.AddRangeAsync(auditLogs);
     }
 
@@ -265,12 +291,13 @@ public static class DatabaseSeeder
         EntityType entityType,
         string createdDate,
         string entityId,
-        string userId)
+        string userId,
+        Guid? organizationId = null)
     {
         return new AuditLogEntity
         {
             CorrelationId = Guid.Parse(correlationId),
-            OrganizationId = OrganizationId,
+            OrganizationId = organizationId ?? Organization1Id,
             UserEmail = userEmail,
             Type = (int)operationType,
             EntityType = (int)entityType,

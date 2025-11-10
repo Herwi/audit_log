@@ -4,6 +4,7 @@ using AuditLog.Domain.Entities;
 
 namespace AuditLog.SystemTests;
 
+[Collection(AuditLogWebApplicationFixture.CollectionName)]
 public class GetUserActionsTests : IClassFixture<AuditLogWebApplicationFixture>
 {
     private readonly HttpClient _client;

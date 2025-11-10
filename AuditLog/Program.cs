@@ -25,6 +25,7 @@ var apiV1 = app.MapGroup("/api/v1");
 
 // Map endpoint modules
 apiV1.MapUserActionsEndpoints();
+apiV1.MapOrganizationsEndpoints();
 
 // Fallback to index.html for client-side routing (production only)
 if (!app.Environment.IsDevelopment())
