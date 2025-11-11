@@ -103,14 +103,14 @@ const UserActionsTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {userActions.map((action) => (
+            {userActions.map((action, index) => (
               <TableRow
                 key={action.correlationId}
                 onClick={() => {
                   setSelectedCorrelationId(action.correlationId);
                   setSheetOpen(true);
                 }}
-                className="cursor-pointer"
+                className={`cursor-pointer hover:bg-accent ${index % 2 === 1 ? "bg-muted/50" : ""}`}
               >
                 <TableCell className="font-medium">{action.userEmail}</TableCell>
                 <TableCell>{formatActionType(action.actionType)}</TableCell>
