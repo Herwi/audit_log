@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { useValidatedFetcher } from "@/hooks/useValidatedFetcher";
 import { useFormatters } from "@/hooks/useFormatters";
+import { useMobileLayout } from "@/hooks/useMobileLayout";
 import * as v from "valibot";
 import {
   auditLogEntrySchema,
@@ -37,6 +38,7 @@ const UserActionDetails = ({
   onOpenChange,
 }: UserActionDetailsProps) => {
   const { formatDateTime, formatDuration } = useFormatters();
+  const isMobile = useMobileLayout();
   const fetcher = useValidatedFetcher(auditLogArraySchema);
 
   const { data, error, isLoading } = useSWR<AuditLogEntry[]>(
@@ -48,7 +50,10 @@ const UserActionDetails = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-2xl overflow-y-auto gap-2">
+      <SheetContent
+        side={isMobile ? "bottom" : "right"}
+        className={isMobile ? "h-[90vh] overflow-y-auto gap-2" : "sm:max-w-2xl overflow-y-auto gap-2"}
+      >
         <SheetHeader>
           <SheetTitle>Audit Log Details</SheetTitle>
           <SheetDescription>
