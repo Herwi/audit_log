@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useSWR from "swr";
+import { ChevronRight } from "lucide-react";
 import { useOrganizations } from "@/contexts/OrganizationsContext";
 import { useValidatedFetcher } from "@/hooks/useValidatedFetcher";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -97,7 +98,8 @@ const UserActionsTable = () => {
               <TableHead>Contract Number</TableHead>
               <TableHead>Start Date & Time</TableHead>
               <TableHead>Duration</TableHead>
-              <TableHead className="text-right">Changed Entities</TableHead>
+              <TableHead>Changed Entities</TableHead>
+              <TableHead className="w-12"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -115,7 +117,10 @@ const UserActionsTable = () => {
                 <TableCell>{action.contractNumber || "-"}</TableCell>
                 <TableCell>{formatDateTime(action.startDate)}</TableCell>
                 <TableCell>{formatDuration(action.duration)}</TableCell>
-                <TableCell className="text-right">{action.changedEntitiesCount}</TableCell>
+                <TableCell>{action.changedEntitiesCount}</TableCell>
+                <TableCell>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
