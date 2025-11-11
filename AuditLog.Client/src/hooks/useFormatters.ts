@@ -23,6 +23,27 @@ export const useFormatters = () => {
   }, []);
 
   /**
+   * Formats an ISO datetime string to a readable date and time with milliseconds
+   * @param isoString - ISO 8601 datetime string
+   * @returns Formatted date and time string with milliseconds (e.g., "Jan 15, 2025, 14:30:45.123")
+   */
+  const formatDateTimeWithMillis = useCallback((isoString: string): string => {
+    const date = new Date(isoString);
+    const baseFormat = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(date);
+
+    const milliseconds = date.getMilliseconds().toString().padStart(3, "0");
+    return `${baseFormat}.${milliseconds}`;
+  }, []);
+
+  /**
    * Formats a TimeSpan string (HH:MM:SS.fff format) to a readable duration
    * @param timeSpan - TimeSpan string from backend
    * @returns Formatted duration string (e.g., "5.12s", "1m 30s", "2h 15m")
@@ -53,6 +74,7 @@ export const useFormatters = () => {
 
   return {
     formatDateTime,
+    formatDateTimeWithMillis,
     formatDuration,
   };
 };

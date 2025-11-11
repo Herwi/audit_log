@@ -37,7 +37,7 @@ const UserActionDetails = ({
   open,
   onOpenChange,
 }: UserActionDetailsProps) => {
-  const { formatDateTime, formatDuration } = useFormatters();
+  const { formatDateTime, formatDateTimeWithMillis, formatDuration } = useFormatters();
   const isMobile = useMobileLayout();
   const fetcher = useValidatedFetcher(auditLogArraySchema);
 
@@ -139,7 +139,7 @@ const UserActionDetails = ({
                   >
                     <div className="flex items-center gap-4 text-sm">
                       <span className="font-medium">
-                        {formatDateTime(entry.createdDate)}
+                        {formatDateTimeWithMillis(entry.createdDate)}
                       </span>
                       <span className="text-muted-foreground">•</span>
                       <span className="font-medium">
