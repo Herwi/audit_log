@@ -49,7 +49,7 @@ const UserActions = () => {
     );
   }
 
-  if (isLoading) {
+  if (isLoading && !data) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground">
         Loading user actions...
