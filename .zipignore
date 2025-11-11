@@ -1,0 +1,14 @@
+# Exclude the React client directory (contains node_modules)
+AuditLog.Client/
+
+# Exclude other unnecessary files/directories
+.git/
+.gitignore
+.idea/
+*.md
+*.sln.DotSettings.user
+AuditLog.SystemTests/
+
+# Exclude build artifacts that will be rebuilt
+**/obj/
+**/bin/
