@@ -27,10 +27,13 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import UserActionDetails from "@/components/UserActionDetails";
 
 const UserActionsTable = () => {
   const { activeOrganization } = useOrganizations();
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCorrelationId, setSelectedCorrelationId] = useState<string | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const { formatDateTime, formatDuration } = useFormatters();
 
   useEffect(() => {
@@ -99,7 +102,14 @@ const UserActionsTable = () => {
           </TableHeader>
           <TableBody>
             {userActions.map((action) => (
-              <TableRow key={action.correlationId}>
+              <TableRow
+                key={action.correlationId}
+                onClick={() => {
+                  setSelectedCorrelationId(action.correlationId);
+                  setSheetOpen(true);
+                }}
+                className="cursor-pointer"
+              >
                 <TableCell className="font-medium">{action.userEmail}</TableCell>
                 <TableCell>{formatActionType(action.actionType)}</TableCell>
                 <TableCell>{action.contractNumber || "-"}</TableCell>
@@ -215,6 +225,13 @@ const UserActionsTable = () => {
           </PaginationContent>
         </Pagination>
       </div>
+
+      <UserActionDetails
+        correlationId={selectedCorrelationId}
+        organizationId={activeOrganization}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
     </div>
   );
 };
