@@ -21,6 +21,10 @@ public static class UserActionsEndpoints
             .WithName("GetUserActions")
             .WithOpenApi();
 
+        group.MapGet("/organizations/{organizationId:guid}/user-actions/{userActionId:guid}/audit-logs", GetAuditLogs)
+            .WithName("GetAuditLogs")
+            .WithOpenApi();
+
         return group;
     }
 
@@ -141,5 +145,39 @@ public static class UserActionsEndpoints
             .Select(a => a.CorrelationId)
             .Distinct()
             .CountAsync();
+    }
+
+    /// <summary>
+    /// Gets all audit log entries for a specific user action (correlation ID)
+    /// </summary>
+    /// <param name="organizationId">The organization identifier</param>
+    /// <param name="userActionId">The user action identifier (correlation ID)</param>
+    /// <param name="context">Database context</param>
+    /// <returns>List of audit log entries ordered chronologically</returns>
+    private static async Task<IResult> GetAuditLogs(
+        Guid organizationId,
+        Guid userActionId,
+        RekrutacjaDbContext context)
+    {
+        var auditLogEntities = await context.AuditLogs
+            .Where(a => a.CorrelationId == userActionId && a.OrganizationId == organizationId)
+            .OrderBy(a => a.CreatedDate)
+            .ToListAsync();
+
+        var auditLogEntries = auditLogEntities
+            .Select(entity => new Domain.Entities.AuditLogEntry
+            {
+                UserEmail = entity.UserEmail ?? string.Empty,
+                OperationType = (Infrastructure.Persistence.Entities.OperationType)entity.Type,
+                EntityType = (Infrastructure.Persistence.Entities.EntityType)entity.EntityType,
+                CreatedDate = entity.CreatedDate,
+                OldValues = entity.OldValues,
+                NewValues = entity.NewValues,
+                CorrelationId = entity.CorrelationId ?? Guid.Empty,
+                EntityId = entity.EntityId ?? Guid.Empty
+            })
+            .ToList();
+
+        return Results.Ok(auditLogEntries);
     }
 }

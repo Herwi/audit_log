@@ -14,7 +14,7 @@ Update the connection string in `AuditLog/appsettings.json`:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Database=RekrutacjaDb;Username=your_user;Password=your_password"
+  "DefaultConnection": "Server=localhost;Database=RekrutacjaDb;Username=your_user;Password=your_password"
 }
 ```
 
@@ -53,3 +53,4 @@ Tests use Testcontainers with PostgreSQL and run sequentially to avoid database 
 
 - `GET /api/v1/organizations` - Get distinct organization IDs
 - `GET /api/v1/organizations/{organizationId}/user-actions?page=1&pageSize=10` - Get paginated user actions with metadata
+- `GET /api/v1/organizations/{organizationId}/user-actions/{userActionId}/audit-logs` - Get detailed audit log entries for a specific user action
