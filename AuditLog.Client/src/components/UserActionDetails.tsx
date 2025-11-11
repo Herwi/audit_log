@@ -10,6 +10,10 @@ import {
   OperationType,
 } from "@/types/auditLogEntry";
 import {
+  type UserAction,
+  formatActionType,
+} from "@/types/userAction";
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -18,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 
 interface UserActionDetailsProps {
-  correlationId: string | null;
+  userAction: UserAction | null;
   organizationId: string | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -27,24 +31,24 @@ interface UserActionDetailsProps {
 const auditLogArraySchema = v.array(auditLogEntrySchema);
 
 const UserActionDetails = ({
-  correlationId,
+  userAction,
   organizationId,
   open,
   onOpenChange,
 }: UserActionDetailsProps) => {
-  const { formatDateTime } = useFormatters();
+  const { formatDateTime, formatDuration } = useFormatters();
   const fetcher = useValidatedFetcher(auditLogArraySchema);
 
   const { data, error, isLoading } = useSWR<AuditLogEntry[]>(
-    open && correlationId && organizationId
-      ? `/api/v1/organizations/${organizationId}/user-actions/${correlationId}/audit-logs`
+    open && userAction && organizationId
+      ? `/api/v1/organizations/${organizationId}/user-actions/${userAction.correlationId}/audit-logs`
       : null,
     fetcher
   );
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-2xl overflow-y-auto">
+      <SheetContent className="sm:max-w-2xl overflow-y-auto gap-2">
         <SheetHeader>
           <SheetTitle>Audit Log Details</SheetTitle>
           <SheetDescription>
@@ -52,7 +56,41 @@ const UserActionDetails = ({
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-6 px-6">
+        {userAction && (
+          <div className="px-6">
+            <h3 className="text-sm font-semibold mb-2">User action details</h3>
+            <div className="rounded-lg border bg-muted/50 p-4 space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">User</span>
+                <span className="font-medium">{userAction.userEmail}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Action Type</span>
+                <span className="font-medium">{formatActionType(userAction.actionType)}</span>
+              </div>
+              {userAction.contractNumber && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Contract Number</span>
+                  <span className="font-medium">{userAction.contractNumber}</span>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Start Date & Time</span>
+                <span className="font-medium">{formatDateTime(userAction.startDate)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Duration</span>
+                <span className="font-medium">{formatDuration(userAction.duration)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Changed Entities</span>
+                <span className="font-medium">{userAction.changedEntitiesCount}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="px-6 pb-6">
           {isLoading && (
             <div className="flex items-center justify-center p-8 text-muted-foreground">
               Loading audit log entries...
@@ -72,8 +110,10 @@ const UserActionDetails = ({
           )}
 
           {data && data.length > 0 && (
-            <div className="space-y-4">
-              {data.map((entry, index) => {
+            <>
+              <h3 className="text-sm font-semibold mb-2">Audit log entries</h3>
+              <div className="space-y-4">
+                {data.map((entry, index) => {
                 const oldValues = entry.oldValues
                   ? JSON.parse(entry.oldValues)
                   : null;
@@ -148,7 +188,8 @@ const UserActionDetails = ({
                   </div>
                 );
               })}
-            </div>
+              </div>
+            </>
           )}
         </div>
       </SheetContent>

@@ -33,7 +33,7 @@ import UserActionDetails from "@/components/UserActionDetails";
 const UserActionsTable = () => {
   const { activeOrganization } = useOrganizations();
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCorrelationId, setSelectedCorrelationId] = useState<string | null>(null);
+  const [selectedUserAction, setSelectedUserAction] = useState<UserAction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const { formatDateTime, formatDuration } = useFormatters();
 
@@ -107,7 +107,7 @@ const UserActionsTable = () => {
               <TableRow
                 key={action.correlationId}
                 onClick={() => {
-                  setSelectedCorrelationId(action.correlationId);
+                  setSelectedUserAction(action);
                   setSheetOpen(true);
                 }}
                 className={`cursor-pointer hover:bg-accent ${index % 2 === 1 ? "bg-muted/50" : ""}`}
@@ -232,7 +232,7 @@ const UserActionsTable = () => {
       </div>
 
       <UserActionDetails
-        correlationId={selectedCorrelationId}
+        userAction={selectedUserAction}
         organizationId={activeOrganization}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
