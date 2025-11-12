@@ -3,6 +3,7 @@
 Full-stack application that transforms granular audit log entries into aggregated user actions, enabling organizations to track who changed what, when, and how long operations took. Groups related database changes by correlation ID into cohesive action views with pagination and drill-down capabilities.
 
 **[Live preview](https://publink-task-b9d5gzgbf3dmbzgu.westeurope-01.azurewebsites.net)** (Azure App Service - Free tier)
+![frontend](./ui.png)
 
 ## Tech Stack
 
@@ -61,6 +62,18 @@ Current architecture supports ~2k entries efficiently. For scaling to millions o
 - Separate Audit Write Service and Audit Query Service
 - Message queue for event distribution between services
 - Independent service scaling with multiple specialized read models
+
+## Requirements Checklist
+
+* ✓ User email displayed
+* ✓ Action type identification
+* ✓ Contract number (when ContractHeaderEntity involved)
+* ✓ Action start date/time
+* ✓ Action duration calculation
+* ✓ Changed entities count
+* ✓ Pagination (10 per page)
+* ✓ Descending date sort
+* ✓ Organization filtering
 
 # Development setup
 
